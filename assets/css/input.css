@@ -1,0 +1,4 @@
+/* Hide the field */
+.acf-field-uuid {
+  display: none;
+}
