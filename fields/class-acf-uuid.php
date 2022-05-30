@@ -77,6 +77,9 @@ class acf_field_uuid extends acf_field
     */
     public function render_field($field)
     {
+        if ($field['hide_field_in_admin'] === 0) { ?>
+            <script>jQuery('[data-key="<?= $field['key'] ?>"]').addClass('shown')</script>
+        <?php }
         ?>
         <input readonly="readonly" type="text" name="<?php echo esc_attr($field['name']) ?>" value="<?php echo esc_attr($field['value']) ?>" />
         <?php
@@ -113,8 +116,11 @@ class acf_field_uuid extends acf_field
     *  @param	n/a
     *  @return	string
     */
-    protected function generate_value()
+    protected function generate_value($uuid_algorithm)
     {
+        if ($uuid_algorithm === 'uniqid') {
+            return gen_uniqid();
+        }
         return gen_uuid_v4();
     }
 
@@ -149,10 +155,57 @@ class acf_field_uuid extends acf_field
     {
         // Only update the value if it is empty
         if ($this->emptyString($value)) {
-            $value = $this->generate_value();
+            $value = $this->generate_value($field['uuid_algorithm']);
         }
         
         return $value;
+    }
+
+    /*
+	*  render_field_settings()
+	*
+	*  Create extra settings for your field. These are visible when editing a field
+	*
+	*  @type	action
+	*  @since	3.6
+	*  @date	23/01/13
+	*
+	*  @param	$field (array) the $field being edited
+	*  @return	n/a
+	*/
+
+	function render_field_settings( $field )
+    {
+
+		/*
+		*  acf_render_field_setting
+		*
+		*  This function will create a setting for your field. Simply pass the $field parameter and an array of field settings.
+		*  The array of settings does not require a `value` or `prefix`; These settings are found from the $field array.
+		*
+		*  More than one setting can be added by copy/paste the above code.
+		*  Please note that you must also have a matching $defaults value for the field name (font_size)
+		*/
+
+		acf_render_field_setting( $field, [
+            'label' => __('Hide Field in Admin', 'acf-uuid'),
+            'name'  => 'hide_field_in_admin',
+            'type'  => 'true_false',
+//            'value' => 1,
+            'ui'    => 1,
+        ]);
+
+        acf_render_field_setting( $field, [
+            'label'   => __('UUID Algorithm', 'acf-uuid'),
+            'name'    => 'uuid_algorithm',
+            'type'    => 'select',
+//            'value'   => 'uuid_v4',
+            'choices' => [
+                'uuid_v4' => 'UUIDv4',
+                'uniqid'  => 'uniqid (PHP builtin)',
+            ],
+        ]);
+
     }
 }
 

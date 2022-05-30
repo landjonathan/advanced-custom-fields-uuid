@@ -1,4 +1,4 @@
 /* Hide the field */
-.acf-field-uuid {
+.acf-field-uuid:not(.shown) {
   display: none;
 }

@@ -16,3 +16,13 @@ function gen_uuid_v4()
 
     return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 }
+
+/*
+ * gen_uniqid
+ *
+ * Utility function to generate a uniqid
+ */
+function gen_uniqid()
+{
+    return uniqid();
+}
