@@ -191,7 +191,6 @@ class acf_field_uuid extends acf_field
             'label' => __('Hide Field in Admin', 'acf-uuid'),
             'name'  => 'hide_field_in_admin',
             'type'  => 'true_false',
-//            'value' => 1,
             'ui'    => 1,
         ]);
 
@@ -199,7 +198,6 @@ class acf_field_uuid extends acf_field
             'label'   => __('UUID Algorithm', 'acf-uuid'),
             'name'    => 'uuid_algorithm',
             'type'    => 'select',
-//            'value'   => 'uuid_v4',
             'choices' => [
                 'uuid_v4' => 'UUIDv4',
                 'uniqid'  => 'uniqid (PHP builtin)',
